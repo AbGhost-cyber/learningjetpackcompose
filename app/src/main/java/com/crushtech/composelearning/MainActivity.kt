@@ -3,13 +3,17 @@ package com.crushtech.composelearning
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -25,38 +29,72 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var counterState by remember {
+                mutableStateOf(0)
+            }
             val painter = painterResource(id = R.drawable.kermit_the_frog)
             val description = "Kermit in the snow"
             val title = "Kermit is playing in the snow"
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(16.dp),
-            ) {
-                ImageCard(
-                    painter = painter,
-                    contentDescription = description,
-                    title = title
-                )
-            }
-//            Column(
+//            Box(
 //                modifier = Modifier
-//                    .background(Color.Green)
-//                    .fillMaxHeight(0.5f)
-//                    .fillMaxWidth()
-//                    .padding(10.dp)
+//                    .fillMaxWidth(0.5f)
+//                    .padding(16.dp),
 //            ) {
-//                Text(text = "Hello", modifier = Modifier.clickable {
-//                    Toast.makeText(this@MainActivity, "clicked", Toast.LENGTH_SHORT).show()
-//                })
-//                Spacer(modifier = Modifier.height(50.dp))
-//                Text(text = "World", Modifier.combinedClickable {
-//                    Toast.makeText(this@MainActivity, "double clicked", Toast.LENGTH_SHORT).show()
-//                })
-//                //Greeting()
+//                ImageCard(
+//                    painter = painter,
+//                    contentDescription = description,
+//                    title = title
+//                )
 //            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(20.dp)
+            ) {
+                NamesList(modifier = Modifier.weight(1f), List(1000) { "Hello Android $it" })
+                Counter(counter = counterState, updateCount = {
+                    counterState = it
+                })
+            }
         }
+    }
+}
+
+@Composable
+fun NamesList(
+    modifier: Modifier = Modifier,
+    names: List<String>,
+) {
+    LazyColumn(modifier = modifier) {
+        items(items = names) {
+            Greeting(name = it)
+            Divider()
+        }
+    }
+}
+
+@Composable
+fun Counter(counter: Int, updateCount: (Int) -> Unit) {
+    Button(onClick = { updateCount(counter + 1) }) {
+        Text(text = "I've been clicked $counter times")
+    }
+}
+
+@Composable
+fun Greeting(name: String) {
+    var isSelected by remember {
+        mutableStateOf(false)
+    }
+    val targetColor by animateColorAsState(
+        targetValue = if (isSelected) MaterialTheme.colors.primary else Color.Transparent,
+        animationSpec = tween(durationMillis = 2000)
+    )
+    Surface(color = targetColor) {
+        Text(text = "Hello $name!", modifier = Modifier
+            .clickable { isSelected = !isSelected }
+            .padding(16.dp))
     }
 }
 
