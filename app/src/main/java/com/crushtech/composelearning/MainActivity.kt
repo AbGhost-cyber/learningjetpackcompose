@@ -89,7 +89,7 @@ fun Greeting(name: String) {
     }
     val targetColor by animateColorAsState(
         targetValue = if (isSelected) MaterialTheme.colors.primary else Color.Transparent,
-        animationSpec = tween(durationMillis = 2000)
+        animationSpec = tween(durationMillis = 700)
     )
     Surface(color = targetColor) {
         Text(text = "Hello $name!", modifier = Modifier
