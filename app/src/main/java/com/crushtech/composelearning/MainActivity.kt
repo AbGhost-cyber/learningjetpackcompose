@@ -20,21 +20,28 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.crushtech.composelearning.ui.ProfilePage
+import com.crushtech.composelearning.ui.theme.ComposeLearningTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var counterState by remember {
-                mutableStateOf(0)
+            ComposeLearningTheme {
+                Surface(color = MaterialTheme.colors.background) {
+                    ProfilePage()
+                }
             }
-            val painter = painterResource(id = R.drawable.kermit_the_frog)
-            val description = "Kermit in the snow"
-            val title = "Kermit is playing in the snow"
+
+//            var countrState by remember {
+//                mutableStateOf(0)
+//            }
+//            val painter = painterResource(id = R.drawable.kermit_the_frog)
+//            val description = "Kermit in the snow"
+//            val title = "Kermit is playing in the snow"
 
 //            Box(
 //                modifier = Modifier
@@ -48,16 +55,16 @@ class MainActivity : ComponentActivity() {
 //                )
 //            }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(20.dp)
-            ) {
-                NamesList(modifier = Modifier.weight(1f), List(1000) { "Hello Android $it" })
-                Counter(counter = counterState, updateCount = {
-                    counterState = it
-                })
-            }
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxHeight()
+//                    .padding(20.dp)
+//            ) {
+//                NamesList(modifier = Modifier.weight(1f), List(1000) { "Hello Android $it" })
+//                Counter(counter = counterState, updateCount = {
+//                    counterState = it
+//                })
+//            }
         }
     }
 }
@@ -92,9 +99,12 @@ fun Greeting(name: String) {
         animationSpec = tween(durationMillis = 700)
     )
     Surface(color = targetColor) {
-        Text(text = "Hello $name!", modifier = Modifier
-            .clickable { isSelected = !isSelected }
-            .padding(16.dp))
+        Text(
+            text = "Hello $name!",
+            modifier = Modifier
+                .clickable { isSelected = !isSelected }
+                .padding(16.dp)
+        )
     }
 }
 
