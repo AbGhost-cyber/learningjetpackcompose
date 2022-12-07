@@ -6,11 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +33,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeLearningTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    MyBox()
+                    MyLazyColumn()
                 }
             }
         }
@@ -65,6 +64,60 @@ class MainActivity : ComponentActivity() {
 //                    setCount(count + 1)
 //                }
             }
+        }
+    }
+
+    @Composable
+    fun MyLazyColumn() {
+        val personList = arrayListOf<Person>()
+        for (i in 1..10) {
+            personList.add(Person(i, "Abundance", "Udo", i + 20))
+        }
+        LazyColumn(
+            contentPadding = PaddingValues(all = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(items = personList) { person ->
+                ListItem(person = person)
+            }
+        }
+    }
+
+    data class Person(
+        val id: Int,
+        val firstName: String,
+        val lastName: String,
+        val age: Int
+    )
+
+    @Composable
+    fun ListItem(person: Person) {
+        Row(
+            modifier = Modifier
+                .background(Color.LightGray)
+                .fillMaxWidth()
+                .padding(24.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "${person.age}",
+                fontSize = MaterialTheme.typography.h4.fontSize,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+            Text(
+                text = person.firstName,
+                color = Color.Black,
+                fontSize = MaterialTheme.typography.h5.fontSize,
+                fontWeight = FontWeight.Normal
+            )
+            Text(
+                text = person.lastName,
+                color = Color.Red,
+                fontSize = MaterialTheme.typography.h5.fontSize,
+                fontWeight = FontWeight.Normal
+            )
         }
     }
 
