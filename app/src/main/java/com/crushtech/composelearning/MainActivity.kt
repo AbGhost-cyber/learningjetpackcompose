@@ -3,6 +3,7 @@ package com.crushtech.composelearning
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -67,18 +68,33 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun MyLazyColumn() {
         val personList = arrayListOf<Person>()
         for (i in 1..10) {
-            personList.add(Person(i, "Abundance", "Udo", i + 20))
+            personList.add(Person(id = i, firstName = "Abundance", lastName = "Udo", age = i + 20))
         }
+        val sections = listOf("A", "B", "C", "D", "E", "F", "G")
         LazyColumn(
             contentPadding = PaddingValues(all = 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(items = personList) { person ->
-                ListItem(person = person)
+            sections.forEach { section ->
+                stickyHeader {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.Black)
+                            .padding(12.dp),
+                        text = "Section $section",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
+                items(personList) { person ->
+                    ListItem(person = person)
+                }
             }
         }
     }
